@@ -43,6 +43,7 @@ import SiliconFlowConfig from './siliconflow';
 import HuggingfaceConfig from './huggingface';
 import { cerebrasProviderAPIConfig } from './cerebras';
 import { InferenceNetProviderConfigs } from './inference-net';
+import { InferenceDevnetProviderConfigs } from './inference-devnet';
 import SambaNovaConfig from './sambanova';
 import LemonfoxAIConfig from './lemonfox-ai';
 import { UpstageConfig } from './upstage';
@@ -106,6 +107,7 @@ const Providers: { [key: string]: ProviderConfigs } = {
   siliconflow: SiliconFlowConfig,
   cerebras: cerebrasProviderAPIConfig,
   'inference-net': InferenceNetProviderConfigs,
+  'inference-devnet': InferenceDevnetProviderConfigs,
   sambanova: SambaNovaConfig,
   'lemonfox-ai': LemonfoxAIConfig,
   upstage: UpstageConfig,
