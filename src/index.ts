@@ -10,6 +10,7 @@ import { HTTPException } from 'hono/http-exception';
 import { compress } from 'hono/compress';
 import { getRuntimeKey } from 'hono/adapter';
 import { bearerAuth } from 'hono/bearer-auth';
+import { getCookie, setCookie } from 'hono/cookie';
 // import { env } from 'hono/adapter' // Have to set this up for multi-environment deployment
 
 // Middlewares
@@ -45,16 +46,34 @@ const app = new Hono<{
   };
 }>();
 
-app.use('*', async (c, next) => {
-  const authMiddleware = bearerAuth({
-    verifyToken: (token, c) => {
-      return token === c.env.PORTKEY_API_KEY;
-    },
-    headerName: 'x-portkey-api-key',
-  });
+// app.use('*', async (c, next) => {
+//   // const tokenFromHeader = c.req.header('api-key');
+//   // const tokenFromQuery = c.req.query('api-key');
+//   // const tokenFromCookie =
+//   //   getCookie(c, 'x-portkey-api-key') || getCookie(c, 'portkey_api_key');
 
-  return authMiddleware(c, next);
-});
+//   // const token = tokenFromHeader || tokenFromQuery || tokenFromCookie;
+
+//   // if (token && token === c.env.PORTKEY_API_KEY) {
+//   //   // If token arrived via query param, persist it as a cookie for future navigations
+//   //   if (tokenFromQuery && !tokenFromCookie) {
+//   //     setCookie(c, 'x-portkey-api-key', token, {
+//   //       httpOnly: false,
+//   //       path: '/',
+//   //       sameSite: 'Lax',
+//   //       maxAge: 60 * 60 * 24 * 30, // 30 days
+//   //     });
+//   //   }
+//   //   return next();
+//   // }
+
+//   const authMiddleware = bearerAuth({
+//     verifyToken: (t, ctx) => t === ctx.env.PORTKEY_API_KEY,
+//     headerName: 'x-portkey-api-key',
+//   });
+
+//   return authMiddleware(c, next);
+// });
 
 /**
  * Middleware that conditionally applies compression middleware based on the runtime.
