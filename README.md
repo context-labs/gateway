@@ -7,9 +7,48 @@
 <a href="https://portkey.sh/report-github"><img src="https://raw.githubusercontent.com/siddharthsambharia-portkey/Portkey-Product-Images/refs/heads/main/LLM%20Report%20Campaign%20Frame.png"></img></a>
 <br>
 
-# AI Gateway
+# Inference.net Deployment
 
-### NOTE: For Inference.net deployment docs, see https://github.com/context-labs/kuzco/blob/development/deploy/deploy.md
+We use [Portkey Gateway](https://github.com/Portkey-AI/gateway) to route requests to third-party providers when we run out of capacity. Portkey Gateway is deployed on Cloudflare Workers.
+
+1. Clone our forked version of the repo here: https://github.com/context-labs/gateway
+
+2. Install packages
+
+```bash
+npm install
+```
+
+3. Deploy
+
+```bash
+# For development / staging environments (ie local dev, tests)
+npx wrangler deploy --minify src/index.ts
+
+# For production (ie testnt & mainnet)
+npx wrangler deploy --minify src/index.ts -e production
+```
+
+Production deployments will enable [Workers Logpush](https://developers.cloudflare.com/workers/observability/logs/logpush/).
+
+5. Create API key secrets:
+
+```bash
+# For development / staging environments (ie local dev, tests)
+npx wrangler secret put PORTKEY_API_KEY
+
+# For production (ie testnt & mainnet)
+npx wrangler secret put PORTKEY_API_KEY -e production
+```
+
+then set them in Kuzco env.
+
+4. Set environment variables in the inference-api deployments
+
+- Set `PORTKEY_BASE_URL` to the Cloudflare Worker deployment url the following format: `https://{deployment_url}/v1`.
+- Set `PORTKEY_API_KEY` to the secrets uploaded
+
+# AI Gateway
 
 #### Route to 250+ LLMs with 1 fast & friendly API
 
