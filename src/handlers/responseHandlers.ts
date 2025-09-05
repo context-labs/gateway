@@ -73,18 +73,6 @@ export async function responseHandler(
     responseTransformerFunction = providerTransformers?.[responseTransformer];
   }
 
-  try {
-    console.debug('[responseHandler]', {
-      provider,
-      streamingMode,
-      status: response.status,
-      transformerKey: responseTransformer,
-      selectedTransformer: !!responseTransformerFunction,
-      contentType: responseContentType,
-      isCacheHit,
-    });
-  } catch {}
-
   // JSON to text/event-stream conversion is only allowed for unified routes: chat completions and completions.
   // Set the transformer to OpenAI json to stream convertor function in that case.
   if (responseTransformer && streamingMode && isCacheHit) {
@@ -114,11 +102,6 @@ export async function responseHandler(
     isCacheHit &&
     responseTransformerFunction
   ) {
-    try {
-      console.debug(
-        '[responseHandler] Using JSON->SSE transform for cache hit'
-      );
-    } catch {}
     const streamingResponse = await handleJSONToStreamResponse(
       response,
       provider,
@@ -127,9 +110,6 @@ export async function responseHandler(
     return { response: streamingResponse, responseJson: null };
   }
   if (streamingMode && isSuccessStatusCode) {
-    try {
-      console.debug('[responseHandler] Using streaming mode');
-    } catch {}
     return {
       response: handleStreamingMode(
         response,

@@ -3,7 +3,6 @@ import { INFERENCEDEVNET } from '../../globals';
 export const InferenceDevnetChatCompleteStreamChunkTransform: (
   response: string
 ) => string = (responseChunk) => {
-  console.debug('responseChunk: ', JSON.stringify(responseChunk));
   let trimmedChunk = responseChunk.trim();
 
   if (trimmedChunk === 'data: [DONE]') {

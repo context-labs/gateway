@@ -46,34 +46,35 @@ const app = new Hono<{
   };
 }>();
 
-// app.use('*', async (c, next) => {
-//   // const tokenFromHeader = c.req.header('api-key');
-//   // const tokenFromQuery = c.req.query('api-key');
-//   // const tokenFromCookie =
-//   //   getCookie(c, 'x-portkey-api-key') || getCookie(c, 'portkey_api_key');
+app.use('*', async (c, next) => {
+  // If we wanna allow going to the /public url, we can uncomment the code below so that all requests to the /public url are authenticated
+  // const tokenFromHeader = c.req.header('api-key');
+  // const tokenFromQuery = c.req.query('api-key');
+  // const tokenFromCookie =
+  //   getCookie(c, 'x-portkey-api-key') || getCookie(c, 'portkey_api_key');
 
-//   // const token = tokenFromHeader || tokenFromQuery || tokenFromCookie;
+  // const token = tokenFromHeader || tokenFromQuery || tokenFromCookie;
 
-//   // if (token && token === c.env.PORTKEY_API_KEY) {
-//   //   // If token arrived via query param, persist it as a cookie for future navigations
-//   //   if (tokenFromQuery && !tokenFromCookie) {
-//   //     setCookie(c, 'x-portkey-api-key', token, {
-//   //       httpOnly: false,
-//   //       path: '/',
-//   //       sameSite: 'Lax',
-//   //       maxAge: 60 * 60 * 24 * 30, // 30 days
-//   //     });
-//   //   }
-//   //   return next();
-//   // }
+  // if (token && token === c.env.PORTKEY_API_KEY) {
+  //   // If token arrived via query param, persist it as a cookie for future navigations
+  //   if (tokenFromQuery && !tokenFromCookie) {
+  //     setCookie(c, 'x-portkey-api-key', token, {
+  //       httpOnly: false,
+  //       path: '/',
+  //       sameSite: 'Lax',
+  //       maxAge: 60 * 60 * 24 * 30, // 30 days
+  //     });
+  //   }
+  //   return next();
+  // }
 
-//   const authMiddleware = bearerAuth({
-//     verifyToken: (t, ctx) => t === ctx.env.PORTKEY_API_KEY,
-//     headerName: 'x-portkey-api-key',
-//   });
+  const authMiddleware = bearerAuth({
+    verifyToken: (t, ctx) => t === ctx.env.PORTKEY_API_KEY,
+    headerName: 'x-portkey-api-key',
+  });
 
-//   return authMiddleware(c, next);
-// });
+  return authMiddleware(c, next);
+});
 
 /**
  * Middleware that conditionally applies compression middleware based on the runtime.
