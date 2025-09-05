@@ -7,11 +7,11 @@ export const InferenceDevnetChatCompleteStreamChunkTransform: (
   let trimmedChunk = responseChunk.trim();
 
   if (trimmedChunk === 'data: [DONE]') {
-    return responseChunk;
+    return 'data: [DONE]\n\n';
   }
 
   if (!trimmedChunk.startsWith('data: ')) {
-    return responseChunk;
+    return trimmedChunk + '\n\n';
   }
 
   const parsedChunk = JSON.parse(trimmedChunk.replace(/^data: /, ''));

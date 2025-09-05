@@ -6,11 +6,11 @@ export const InferenceNetChatCompleteStreamChunkTransform: (
   let trimmedChunk = responseChunk.trim();
 
   if (trimmedChunk === 'data: [DONE]') {
-    return responseChunk;
+    return responseChunk + '\n\n';
   }
 
   if (!trimmedChunk.startsWith('data: ')) {
-    return responseChunk;
+    return responseChunk + '\n\n';
   }
 
   const parsedChunk = JSON.parse(trimmedChunk.replace(/^data: /, ''));
