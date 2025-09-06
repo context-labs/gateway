@@ -69,7 +69,9 @@ app.use('*', async (c, next) => {
   // }
 
   const authMiddleware = bearerAuth({
-    verifyToken: (t, ctx) => t === ctx.env.PORTKEY_API_KEY,
+    verifyToken: (token, c) => {
+      return token === c.env.PORTKEY_API_KEY;
+    },
     headerName: 'x-portkey-api-key',
   });
 
