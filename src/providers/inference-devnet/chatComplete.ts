@@ -6,11 +6,29 @@ export const InferenceDevnetChatCompleteStreamChunkTransform: (
   let trimmedChunk = responseChunk.trim();
 
   if (trimmedChunk === 'data: [DONE]') {
-    return responseChunk;
+    return 'data: [DONE]\n\n';
+  }
+
+  if (trimmedChunk.startsWith('event: error')) {
+    const errorMatch = trimmedChunk.match(/^event: error\s*\n?data: (.+)$/);
+
+    try {
+      const errorString = errorMatch ? errorMatch[1] : '';
+      const error = JSON.parse(errorString);
+      return (
+        `event: error\ndata: ${JSON.stringify({
+          ...error,
+          provider: INFERENCEDEVNET,
+        })}` + '\n\n'
+      );
+    } catch (error) {
+      // fallback to the original chunk
+      return trimmedChunk + '\n\n';
+    }
   }
 
   if (!trimmedChunk.startsWith('data: ')) {
-    return responseChunk;
+    return trimmedChunk + '\n\n';
   }
 
   const parsedChunk = JSON.parse(trimmedChunk.replace(/^data: /, ''));

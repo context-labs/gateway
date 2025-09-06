@@ -8,7 +8,7 @@ ENVIRONMENT = 'dev'
 CUSTOM_HEADERS_TO_IGNORE = []
 
 [observability]
-enabled = false
+enabled = true
 
 #
 #Configuration for DEVELOPMENT environment
