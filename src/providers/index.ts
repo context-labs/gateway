@@ -47,7 +47,7 @@ import { InferenceDevnetProviderConfigs } from './inference-devnet';
 import SambaNovaConfig from './sambanova';
 import LemonfoxAIConfig from './lemonfox-ai';
 import { UpstageConfig } from './upstage';
-import { LAMBDA } from '../globals';
+import { INFERENCE_DO_NODE, LAMBDA } from '../globals';
 import { LambdaProviderConfig } from './lambda';
 import { DashScopeConfig } from './dashscope';
 import XAIConfig from './x-ai';
@@ -64,6 +64,7 @@ import HyperbolicConfig from './hyperbolic';
 import { FeatherlessAIConfig } from './featherless-ai';
 import KrutrimConfig from './krutrim';
 import AI302Config from './302ai';
+import { InferenceDoNodeProviderConfigs } from './inference-do-router';
 
 const Providers: { [key: string]: ProviderConfigs } = {
   openai: OpenAIConfig,
@@ -108,6 +109,7 @@ const Providers: { [key: string]: ProviderConfigs } = {
   cerebras: cerebrasProviderAPIConfig,
   'inference-net': InferenceNetProviderConfigs,
   'inference-devnet': InferenceDevnetProviderConfigs,
+  [INFERENCE_DO_NODE]: InferenceDoNodeProviderConfigs,
   sambanova: SambaNovaConfig,
   'lemonfox-ai': LemonfoxAIConfig,
   upstage: UpstageConfig,

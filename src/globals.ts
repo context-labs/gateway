@@ -82,6 +82,7 @@ export const SILICONFLOW: string = 'siliconflow';
 export const CEREBRAS: string = 'cerebras';
 export const INFERENCENET: string = 'inference-net';
 export const INFERENCEDEVNET: string = 'inference-devnet';
+export const INFERENCE_DO_NODE: string = 'inference-do-node';
 export const SAMBANOVA: string = 'sambanova';
 export const LEMONFOX_AI: string = 'lemonfox-ai';
 export const UPSTAGE: string = 'upstage';
@@ -147,6 +148,7 @@ export const VALID_PROVIDERS = [
   CEREBRAS,
   INFERENCENET,
   INFERENCEDEVNET,
+  INFERENCE_DO_NODE,
   SAMBANOVA,
   LEMONFOX_AI,
   UPSTAGE,
