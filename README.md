@@ -48,6 +48,11 @@ then set them in Kuzco env.
 - Set `PORTKEY_BASE_URL` to the Cloudflare Worker deployment url the following format: `https://{deployment_url}/v1`.
 - Set `PORTKEY_API_KEY` to the secrets uploaded
 
+## Adding new providers
+
+1. Create a custom migration with `bun run db:generate:custom` and insert a custom instance for the new provider. Search `sys_instance_inferencedevnet` for an example of the insertion.
+2. Update `packages/api/src/service/portkey/portkey.constants.ts` to include the API keys, model maps and providers.
+
 # AI Gateway
 
 #### Route to 250+ LLMs with 1 fast & friendly API
