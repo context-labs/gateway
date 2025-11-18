@@ -1,7 +1,12 @@
 import { ProviderAPIConfig } from '../types';
 
 export const inferenceDoNodeAPIConfig: ProviderAPIConfig = {
-  getBaseURL: () => 'https://donode.inference.net/v1',
+  getBaseURL: () => {
+    if (process.env.ENVIRONMENT === 'dev') {
+      return 'https://donode.inference.cool/v1';
+    }
+    return 'https://donode.inference.net/v1';
+  },
   headers({ providerOptions }) {
     const { apiKey } = providerOptions;
     return { Authorization: `Bearer ${apiKey}` };
