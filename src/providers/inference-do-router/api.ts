@@ -5,7 +5,7 @@ export const inferenceDoNodeAPIConfig: ProviderAPIConfig = {
     if (process.env.ENVIRONMENT === 'dev') {
       return 'https://donode.inference.cool/v1';
     }
-    return 'https://donode.inference.net/v1';
+    return 'https://donode.inference.cool/v1';
   },
   headers({ providerOptions }) {
     const { apiKey } = providerOptions;
