@@ -6,7 +6,6 @@ compatibility_flags = [ "nodejs_compat" ]
 [vars]
 ENVIRONMENT = 'dev'
 CUSTOM_HEADERS_TO_IGNORE = []
-PORTKEY_API_KEY = 'test'
 
 [observability]
 enabled = true
