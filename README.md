@@ -53,6 +53,16 @@ then set them in Kuzco env.
 1. Create a custom migration with `bun run db:generate:custom` and insert a custom instance for the new provider. Search `sys_instance_inferencedevnet` for an example of the insertion.
 2. Update `packages/api/src/service/portkey/portkey.constants.ts` to include the API keys, model maps and providers.
 
+## Running locally
+
+WARNING: The gateway codebase is a mess. Environment loading and logging is very buggy locally. Dont assume anything.
+
+1. Comment out the entire auth middleware in `src/index.ts`, for some reason this doesnt work locally.
+
+2. For any logging, append to a file using `appendSync`. There's probably a way to properly log but its jenky and I havent spent the time figuring it out.
+
+3. Run the app with `npm run dev:node`. Don't use Bun or Wrangler.
+
 # AI Gateway
 
 #### Route to 250+ LLMs with 1 fast & friendly API
