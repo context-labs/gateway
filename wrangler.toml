@@ -4,6 +4,7 @@ main = "src/worker-entry.ts"
 compatibility_flags = [ "nodejs_compat" ]
 logpush = true
 route = { pattern = "portkey.inference.cool/*", zone_name = "inference.cool" }
+workers_dev = true
 
 [version_metadata]
 binding = "CF_VERSION_METADATA"
@@ -23,6 +24,7 @@ enabled = true
 name = "portkey-gateway-production"
 logpush = true
 route = { pattern = "portkey.inference.net/*", zone_name = "inference.net" }
+workers_dev = true
 
 [env.production.vars]
 ENVIRONMENT = 'production'
