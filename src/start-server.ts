@@ -2,7 +2,7 @@
 
 import { serve } from '@hono/node-server';
 
-import { app } from './index';
+import app from './index';
 import { streamSSE } from 'hono/streaming';
 import { Context } from 'hono';
 import { createNodeWebSocket } from '@hono/node-ws';

@@ -1,6 +1,6 @@
 name = "portkey-gateway-development"
 compatibility_date = "2024-12-05"
-main = "src/index.ts"
+main = "src/worker-entry.ts"
 compatibility_flags = [ "nodejs_compat" ]
 logpush = true
 route = { pattern = "portkey.inference.cool/*", zone_name = "inference.cool" }

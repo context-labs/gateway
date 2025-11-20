@@ -13,14 +13,6 @@ import { bearerAuth } from 'hono/bearer-auth';
 import { getCookie, setCookie } from 'hono/cookie';
 // import { env } from 'hono/adapter' // Have to set this up for multi-environment deployment
 
-// OTel
-import { instrument } from '@inference-net/otel-cf-workers';
-import {
-  CompositePropagator,
-  W3CBaggagePropagator,
-  W3CTraceContextPropagator,
-} from '@opentelemetry/core';
-
 // Middlewares
 import { requestValidator } from './middlewares/requestValidator';
 import { hooks } from './middlewares/hooks';
@@ -48,7 +40,7 @@ import conf from '../conf.json';
 import modelResponsesHandler from './handlers/modelResponsesHandler';
 
 // Create a new Hono server instance
-export const app = new Hono<{
+const app = new Hono<{
   Bindings: {
     PORTKEY_API_KEY: string;
   };
@@ -321,36 +313,4 @@ app.get('/v1/:path{(?!realtime).*}', requestValidator, proxyHandler);
 
 app.delete('/v1/*', requestValidator, proxyHandler);
 
-const handler = {
-  fetch: app.fetch,
-} satisfies ExportedHandler<any>;
-
-// Export the app
-export default instrument(handler, (env, _trigger) => {
-  const hasHasOTLP = env.OTLP_ENDPOINT != undefined && env.OTLP_ENDPOINT != '';
-  const otlpHasApiKey = env.OTLP_API_KEY != undefined && env.OTLP_API_KEY != '';
-
-  return {
-    service: {
-      name: 'portkey',
-      namespace: env.ENVIRONMENT,
-      version: env.CF_VERSION_METADATA.tag,
-    },
-    trace: hasHasOTLP
-      ? {
-          exporter: {
-            url: `${env.OTLP_ENDPOINT}/v1/traces`,
-            headers: otlpHasApiKey
-              ? { Authorization: `Bearer ${env.OTLP_API_KEY}` }
-              : undefined,
-          },
-          spanProcessors: new CompositePropagator({
-            propagators: [
-              new W3CTraceContextPropagator(),
-              new W3CBaggagePropagator(),
-            ],
-          }),
-        }
-      : undefined,
-  };
-});
+export default app;
