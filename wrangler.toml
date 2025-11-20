@@ -2,34 +2,35 @@ name = "portkey-gateway-development"
 compatibility_date = "2024-12-05"
 main = "src/index.ts"
 compatibility_flags = [ "nodejs_compat" ]
+logpush = true
+route = { pattern = "portkey.inference.cool/*", zone_name = "inference.cool" }
+
+[version_metadata]
+binding = "CF_VERSION_METADATA"
 
 [vars]
 ENVIRONMENT = 'dev'
 CUSTOM_HEADERS_TO_IGNORE = []
+OTLP_ENDPOINT = 'https://otelcollector.inference.cool'
 
 [observability]
 enabled = true
 
 #
-#Configuration for DEVELOPMENT environment
-#
-[env.staging]
-name = "rubeus-dev"
-
-[env.staging.vars]
-ENVIRONMENT = 'staging'
-CUSTOM_HEADERS_TO_IGNORE = []
-
-#
-#Configuration for PRODUCTION environment
+# Configuration for PRODUCTION environment
 #
 [env.production]
 name = "portkey-gateway-production"
-logpush=true
+logpush = true
+route = { pattern = "portkey.inference.net/*", zone_name = "inference.net" }
 
 [env.production.vars]
 ENVIRONMENT = 'production'
 CUSTOM_HEADERS_TO_IGNORE = []
+OTLP_ENDPOINT = 'https://otelcollector.inference.net'
+
+[env.production.version_metadata]
+binding = "CF_VERSION_METADATA"
 
 [env.production.observability]
 enabled = true
