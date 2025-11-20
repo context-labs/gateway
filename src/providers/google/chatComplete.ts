@@ -590,7 +590,9 @@ export const GoogleChatCompleteResponseTransform: (
             ...(!strictOpenAiCompliance &&
               contentBlocks.length && { content_blocks: contentBlocks }),
           };
+
           const logprobsContent: Logprobs[] | null =
+            // @ts-ignore
             transformVertexLogprobs(generation);
           let logprobs;
           if (logprobsContent) {

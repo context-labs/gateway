@@ -82,6 +82,7 @@ export const getMessagesConfig = ({
   if (defaultValues) {
     Object.keys(defaultValues).forEach((key) => {
       if (!Array.isArray(baseParams[key])) {
+        // @ts-ignore
         baseParams[key].default = defaultValues[key];
       }
     });

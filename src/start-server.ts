@@ -135,7 +135,9 @@ if (
   });
 }
 
-const { injectWebSocket, upgradeWebSocket } = createNodeWebSocket({ app });
+const { injectWebSocket, upgradeWebSocket } = createNodeWebSocket({
+  app: app as any,
+});
 
 app.get(
   '/v1/realtime',
