@@ -2,6 +2,7 @@ import {
   instrument,
   LogsConfig,
   OTLPTransport,
+  LogLevel,
 } from '@inference-net/otel-cf-workers';
 import {
   CompositePropagator,
@@ -14,22 +15,22 @@ const handler = {
   fetch: app.fetch,
 } satisfies ExportedHandler<any>;
 
-const parseLogLevel = (level: string): NonNullable<LogsConfig['level']> => {
+const parseLogLevel = (level: string): NonNullable<LogLevel> => {
   const normalized = level.toLowerCase().trim();
   const validLevels = [
-    'trace',
-    'debug',
-    'info',
-    'warn',
-    'error',
-    'fatal',
+    'TRACE',
+    'DEBUG',
+    'INFO',
+    'WARN',
+    'ERROR',
+    'FATAL',
   ] as const;
 
   if (validLevels.includes(normalized as any)) {
-    return normalized as NonNullable<LogsConfig['level']>;
+    return normalized as NonNullable<LogLevel>;
   }
 
-  return 'info';
+  return 'INFO';
 };
 
 // Export the app

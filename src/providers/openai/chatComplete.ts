@@ -1,5 +1,5 @@
 import { ANTHROPIC, OPEN_AI } from '../../globals';
-import { ContentBlockChunk } from '../../types/requestBody';
+import { ContentBlockChunk, type Params } from '../../types/requestBody';
 import {
   ChatCompletionResponse,
   ErrorResponse,
@@ -415,4 +415,47 @@ export const OpenAIChatCompleteJSONToStreamResponseTransform: (
 
   streamChunkArray.push(`data: [DONE]\n\n`);
   return streamChunkArray;
+};
+
+/**
+ * OpenAI streaming is already SSE (`text/event-stream`). If we want to include gateway-only fields
+ * like `provider`, we must parse each `data: { ... }` JSON chunk and re-emit it.
+ *
+ * NOTE: When `strictOpenAiCompliance` is true, we should avoid mutating OpenAI's SSE payloads.
+ */
+export const OpenAIChatCompleteStreamChunkTransform: (
+  response: string,
+  _fallbackId: string,
+  _streamState: Record<string, boolean>,
+  strictOpenAiCompliance: boolean,
+  _gatewayRequest: Params
+) => string = (
+  responseChunk,
+  _fallbackId,
+  _streamState,
+  _strictOpenAiCompliance
+) => {
+  // `readStream()` splits by the provider-specific delimiter (usually `\n\n`) and passes us the
+  // chunk without that delimiter. We must add it back.
+  const lines = responseChunk.split('\n');
+  const outLines = lines.map((line) => {
+    const trimmedLine = line.trimEnd();
+    if (!trimmedLine.startsWith('data:')) return trimmedLine;
+
+    const payload = trimmedLine.replace(/^data:\s*/, '').trim();
+    if (!payload) return trimmedLine;
+    if (payload === '[DONE]') return 'data: [DONE]';
+
+    try {
+      const parsed: Record<string, any> = JSON.parse(payload);
+      delete parsed.obfuscation;
+      parsed.provider = OPEN_AI;
+      return `data: ${JSON.stringify(parsed)}`;
+    } catch {
+      // fall through: return original line
+    }
+    return trimmedLine;
+  });
+
+  return `${outLines.join('\n')}\n\n`;
 };

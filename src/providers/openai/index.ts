@@ -8,6 +8,7 @@ import OpenAIAPIConfig from './api';
 import {
   OpenAIChatCompleteConfig,
   OpenAIChatCompleteResponseTransform,
+  OpenAIChatCompleteStreamChunkTransform,
 } from './chatComplete';
 import {
   OpenAIImageGenerateConfig,
@@ -75,7 +76,7 @@ const OpenAIConfig: ProviderConfigs = {
     complete: OpenAICompleteResponseTransform,
     // 'stream-complete': OpenAICompleteResponseTransform,
     chatComplete: OpenAIChatCompleteResponseTransform,
-    // 'stream-chatComplete': OpenAIChatCompleteResponseTransform,
+    'stream-chatComplete': OpenAIChatCompleteStreamChunkTransform,
     imageGenerate: OpenAIImageGenerateResponseTransform,
     createSpeech: OpenAICreateSpeechResponseTransform,
     createTranscription: OpenAICreateTranscriptionResponseTransform,
