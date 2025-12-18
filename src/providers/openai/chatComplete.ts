@@ -449,6 +449,7 @@ export const OpenAIChatCompleteStreamChunkTransform: (
     try {
       const parsed: Record<string, any> = JSON.parse(payload);
       delete parsed.obfuscation;
+      delete parsed.service_tier;
       parsed.provider = OPEN_AI;
       return `data: ${JSON.stringify(parsed)}`;
     } catch {
